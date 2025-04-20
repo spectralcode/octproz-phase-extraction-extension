@@ -58,9 +58,9 @@ PhaseExtractionCalculator::~PhaseExtractionCalculator()
 //todo: this background subtraction feature is a mess, refactor everything
 void PhaseExtractionCalculator::getBackgroundSignal(unsigned char *data, size_t size, size_t bytesPerSample, int samplesPerLine) {
 	emit info(tr("Calculating background signal..."));
-	this->numberOfSamples = size/bytesPerSample;
+	this->numberOfSamples = static_cast<int>(size/bytesPerSample);
 	this->samplesPerLine = samplesPerLine;
-	this->bytesPerSample = bytesPerSample;
+	this->bytesPerSample = static_cast<int>(bytesPerSample);
 	this->lines = numberOfSamples/samplesPerLine;
 	this->backgroundSignal.resize(samplesPerLine);
 	this->backgroundSignal.fill(0);
@@ -269,7 +269,7 @@ void PhaseExtractionCalculator::fitResamplingCurve() {
 
 	//copy coeffs and emit them with OCTproZ scaling factors to GUI
 	this->coeffs.resize(order + 1);
-	for (size_t i = 0; i < order + 1; i++) {
+	for (int i = 0; i < order + 1; i++) {
 		coeffs[i] = result[i];
 	}
 	size = size -1;
@@ -284,9 +284,9 @@ void PhaseExtractionCalculator::fitResamplingCurve() {
 
 void PhaseExtractionCalculator::setData(unsigned char* data, size_t size, size_t bytesPerSample, int samplesPerLine) {
 	this->inputData = data;
-	this->numberOfSamples = size/bytesPerSample;
+	this->numberOfSamples = static_cast<int>(size/bytesPerSample);
 	this->samplesPerLine = samplesPerLine;
-	this->bytesPerSample = bytesPerSample;
+	this->bytesPerSample = static_cast<int>(bytesPerSample);
 	this->lines = numberOfSamples/samplesPerLine;
 	this->averagedData.resize(this->samplesPerLine);
 	this->averagedData.fill(0);

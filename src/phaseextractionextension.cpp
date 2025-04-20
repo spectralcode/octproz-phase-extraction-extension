@@ -186,6 +186,7 @@ void PhaseExtractionExtension::transferCoeffsToOCTproZ() {
 }
 
 void PhaseExtractionExtension::rawDataReceived(void* buffer, unsigned int bitDepth, unsigned int samplesPerLine, unsigned int linesPerFrame, unsigned int framesPerBuffer, unsigned int buffersPerVolume, unsigned int currentBufferNr) {
+	Q_UNUSED(buffersPerVolume);
 	if(this->active){
 		if(!this->isFetching && this->rawGrabbingAllowed && this->fetchingEnabled){
 			this->isFetching = true;
