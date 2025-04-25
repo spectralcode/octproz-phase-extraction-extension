@@ -34,9 +34,71 @@ Download and installation
 Download the zip archive from the [GitHub release section](https://github.com/spectralcode/PhaseExtractionExtension/releases) and extract it into the OCTproZ folder (_phaseextractionextension.dll_ should be placed in the _plugins_ folder and _libfftw3-3.dll_ should be in the same folder as _octproz.exe_).
 
 
+
 How to compile
 ----------
-Watch [this video](https://www.youtube.com/watch?v=DHB3NX_P1vk) from minute 12:50.
+Phase Extraction Extension is a submodule of OCTproZ and you can clone it together with OCTproZ. 
+### 1. Clone the Repository
+
+#### Full OCTproZ with all submodules
+
+Clone **OCTproZ** along with all its submodules, including the **Phase Extraction Extension**:
+
+```bash
+git clone --recurse-submodules https://github.com/spectralcode/OCTproZ.git
+```
+
+If you've already cloned OCTproZ without submodules:
+
+```bash
+cd OCTproZ
+git submodule update --init --recursive
+```
+
+The **Phase Extraction Extension** will be located at:
+
+```
+OCTproZ/octproz_project/octproz_plugins/octproz-phase-extraction-extension
+```
+
+It is automatically included in the OCTproZ build via `octproz_plugins.pro`.
+
+#### Clone Only the Phase Extraction Extension Submodule
+
+If you already have OCTproZ cloned and just need the **Phase Extraction Extension**:
+
+```bash
+cd OCTproZ
+git submodule update --init octproz_project/octproz_plugins/octproz-phase-extraction-extension
+```
+
+---
+
+### 2. Install Dependencies
+
+#### Windows
+
+The **OCTproZ build process** will automatically copy the necessary FFTW3 DLLs (e.g., `libfftw3-3.dll`) to the folder where `octproz.exe` resides.
+
+#### Ubuntu / Linux
+
+Install **FFTW3** via package manager:
+```bash
+sudo apt-get install libfftw3 libfftw3-dev
+```
+
+---
+
+### 3. Compile with Qt Creator
+
+1. Open **Qt Creator**.
+2. Load the main project file: `OCTproZ/octproz_project/octproz_project.pro`
+3. Select the appropriate Qt kit if not already done. 
+4. The **Phase Extraction Extension** will already be included in the build, as it's part of `octproz_plugins.pro`.
+5. Build the project.
+
+
+There is also a video showing how to build the Phase Extraction Extension on Windows, available [here](https://www.youtube.com/watch?v=DHB3NX_P1vk). Note that the video is slightly outdated, as the Phase Extraction Extension was not a submodule at the time of recording. The relevant part starts at minute 12:50.
 
 
 Dependencies
