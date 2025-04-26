@@ -80,6 +80,8 @@ PhaseExtractionExtensionForm::PhaseExtractionExtensionForm(QWidget *parent) :
 		emit fitParamsChanged(this->ui->spinBox_ignoreStart->value(), this->ui->spinBox_ignoreEnd->value());
 	});
 
+	this->installEventFilter(this);
+
 	//default values
 	this->ui->radioButton_select->setChecked(true);
 }
@@ -100,6 +102,8 @@ void PhaseExtractionExtensionForm::setSettings(QVariantMap settings) {
 	this->ui->spinBox_endAscanPeak->setValue(settings.value(PEAK_END).toInt());
 	this->ui->spinBox_ignoreStart->setValue(settings.value(IGNORE_START).toInt());
 	this->ui->spinBox_ignoreEnd->setValue(settings.value(IGNORE_END).toInt());
+	this->parameters.windowState = settings.value(PHASE_EXTRACTION_WINDOW_STATE).toByteArray();
+	this->restoreGeometry(this->parameters.windowState);
 }
 
 void PhaseExtractionExtensionForm::getSettings(QVariantMap* settings) {
@@ -113,6 +117,7 @@ void PhaseExtractionExtensionForm::getSettings(QVariantMap* settings) {
 	settings->insert(PEAK_END, this->parameters.endPos);
 	settings->insert(IGNORE_START, this->parameters.ignoreStart);
 	settings->insert(IGNORE_END, this->parameters.ignoreEnd);
+	settings->insert(PHASE_EXTRACTION_WINDOW_STATE, this->parameters.windowState);
 }
 
 void PhaseExtractionExtensionForm::updateParams() {
@@ -249,6 +254,18 @@ void PhaseExtractionExtensionForm::saveResamplingCurve() {
 
 void PhaseExtractionExtensionForm::enableAveragingGroupBox() {
 	this->ui->groupBox_2->setEnabled(true);
+}
+
+bool PhaseExtractionExtensionForm::eventFilter(QObject* watched, QEvent* event) {
+	if (watched == this) {
+		if (event->type() == QEvent::Resize || event->type() == QEvent::Move) {
+			if (this->isVisible()) {
+				this->parameters.windowState = this->saveGeometry();
+				emit paramsChanged(this->parameters);
+			}
+		}
+	}
+	return QWidget::eventFilter(watched, event);
 }
 
 void PhaseExtractionExtensionForm::findGuiElements(){

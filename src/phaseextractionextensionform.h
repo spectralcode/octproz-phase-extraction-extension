@@ -38,6 +38,7 @@
 #define PEAK_END "peak_end"
 #define IGNORE_START "ignore_start"
 #define IGNORE_END "ignore_end"
+#define PHASE_EXTRACTION_WINDOW_STATE "window_state"
 
 #include <QWidget>
 #include <QCheckBox>
@@ -63,6 +64,7 @@ struct PhaseExtractionExtensionParameters {
 	int endPos;
 	int ignoreStart;
 	int ignoreEnd;
+	QByteArray windowState;
 };
 
 class PhaseExtractionExtensionForm : public QWidget
@@ -102,6 +104,8 @@ public slots:
 	void saveResamplingCurve();
 	void enableAveragingGroupBox();
 
+protected:
+	bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
 	void findGuiElements();
